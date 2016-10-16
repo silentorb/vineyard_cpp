@@ -9,13 +9,6 @@ namespace vineyard {
 
   class Trellis;
 
-  enum class List_Type {
-      none,
-      value,
-      pointer,
-      unique_ptr
-  };
-
   class Property {
       const string name;
       Trellis *trellis;
@@ -23,11 +16,9 @@ namespace vineyard {
       Trellis *other_trellis = nullptr;
       const string other_trellis_name;
       int offset = -1;
-      List_Type list_type;
 
   public:
-      Property(const string &name, Types type, const string other_trellis_name = "",
-               List_Type list_type = List_Type::none);
+      Property(const string &name, Types type);
 
       const string &get_name() const {
         return name;
@@ -65,10 +56,6 @@ namespace vineyard {
 
       const string &get_other_trellis_name() const {
         return other_trellis_name;
-      }
-
-      List_Type get_list_type() const {
-        return list_type;
       }
   };
 }

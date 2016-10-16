@@ -2,8 +2,8 @@
 
 namespace vineyard {
 
-  Trellis::Trellis(const string &name, initializer_list<Property> initializer, int initial_offset, Seedery seedery) :
-    name(name), seedery(seedery) {
+  Trellis::Trellis(const string &name, initializer_list<Property> initializer, int initial_offset) :
+    name(name) {
 
     properties.push_back(Property("id", Types::longer));
     properties[0].set_trellis(*this);
@@ -14,7 +14,6 @@ namespace vineyard {
       properties[i++].set_trellis(*this);
     }
 
-//    offset = sizeof(vineyard::Seed) - sizeof(Identity);
     offset = initial_offset;
     for (auto &property : properties) {
       property.set_offset(offset);

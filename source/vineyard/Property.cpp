@@ -3,8 +3,8 @@
 
 namespace vineyard {
 
-  Property::Property(const string &name, Types type, const string other_trellis_name, List_Type list_type) :
-    name(name), type(type), other_trellis_name(other_trellis_name), list_type(list_type) {
+  Property::Property(const string &name, Types type) :
+    name(name), type(type) {
 
   }
 

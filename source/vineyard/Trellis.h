@@ -12,18 +12,16 @@ using namespace vineyard;
 
 namespace vineyard {
 
-  using Seedery = std::function<void *(int)>;
   using Trellis_Map = std::function<Trellis &(const std::string&)>;
 
   class Trellis {
       const string name;
       vector<Property> properties;
       int offset;
-      Seedery seedery;
       Identity _next_id = 1;
 
   public:
-      Trellis(const string &name, initializer_list<Property> initializer, int offset,Seedery seedery = nullptr);
+      Trellis(const string &name, initializer_list<Property> initializer, int offset);
 
       const string &get_name() const {
         return name;
@@ -55,10 +53,6 @@ namespace vineyard {
       }
 
       void finalize(const Trellis_Map &library);
-
-      void *find_seed(int id) const {
-        return seedery(id);
-      }
 
       void reset_next_id() {
         _next_id = 1;
