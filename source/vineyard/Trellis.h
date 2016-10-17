@@ -1,69 +1,42 @@
 #pragma once
 
 #include "Property.h"
-#include "identity.h"
 #include <string>
 #include <vector>
-#include <stdexcept>
 #include <functional>
+#include <memory>
+#include <commoner/no_copy.h>
 
-using namespace std;
 using namespace vineyard;
 
 namespace vineyard {
 
-  using Trellis_Map = std::function<Trellis &(const std::string&)>;
+  using Trellis_Map = std::function<Trellis &(const std::string &)>;
 
-  class Trellis {
-      const string name;
-      vector<Property> properties;
-      int offset;
-      Identity _next_id = 1;
+  class Trellis : commoner::no_copy {
+      const std::string name;
+      std::vector<std::unique_ptr<Property>> properties;
 
   public:
-      Trellis(const string &name, initializer_list<Property> initializer, int offset);
+      Trellis(const std::string &name);
+      ~Trellis();
 
-      const string &get_name() const {
+      const std::string &get_name() const {
         return name;
       }
 
-      const vector<Property> &get_properties() const {
+      void reserve_properties(size_t size);
+
+      Property &create_property(const std::string &name, Types type);
+
+      const std::vector<std::unique_ptr<Property>> &get_properties() const {
         return properties;
       }
 
-//       vector<Property> &get_properties()  {
-//        return properties;
-//      }
-
-      const Property &get_property(const string &property_name) const {
-        for (auto &property: properties) {
-          if (property.get_name() == property_name)
-            return property;
-        }
-
-        throw runtime_error("Could not find property " + property_name);
-      }
+      const Property &get_property(const std::string &property_name) const;
 
       const Property &get_property(int index) const {
-        return properties[index];
-      }
-
-      int get_block_size() const {
-        return offset;
-      }
-
-      void finalize(const Trellis_Map &library);
-
-      void reset_next_id() {
-        _next_id = 1;
-      }
-
-      void set_next_id(Identity value) {
-        _next_id = value;
-      }
-
-      Identity next_id() {
-        return _next_id++;
+        return *properties[index];
       }
   };
 }

@@ -1,14 +1,12 @@
 #include <stdexcept>
 #include "Property.h"
 
+using namespace std;
+
 namespace vineyard {
 
-  Property::Property(const string &name, Types type) :
-    name(name), type(type) {
+  Property::Property(const string &name, Types type, Trellis &trellis) :
+    name(name), type(type), trellis(trellis) {
 
-  }
-
-  const Type_Info &Property::get_info() const {
-    return get_type_info(get_type());
   }
 }

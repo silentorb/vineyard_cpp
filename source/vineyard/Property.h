@@ -2,34 +2,29 @@
 
 #include "Types.h"
 #include <string>
-
-using namespace std;
+#include <commoner/no_copy.h>
 
 namespace vineyard {
 
   class Trellis;
 
-  class Property {
-      const string name;
-      Trellis *trellis;
+  class Property : commoner::no_copy {
+      const std::string name;
+      Trellis &trellis;
       Types type;
       Trellis *other_trellis = nullptr;
-      const string other_trellis_name;
-      int offset = -1;
+      Property *other_property = nullptr;
+      int index;
 
   public:
-      Property(const string &name, Types type);
+      Property(const std::string &name, Types type, Trellis &trellis);
 
-      const string &get_name() const {
+      const std::string &get_name() const {
         return name;
       }
 
       Trellis &get_trellis() const {
-        return *trellis;
-      }
-
-      void set_trellis(Trellis &trellis) {
-        this->trellis = &trellis;
+        return trellis;
       }
 
       void set_other_trellis(Trellis *other_trellis) {
@@ -44,18 +39,5 @@ namespace vineyard {
         return other_trellis;
       }
 
-      int get_offset() const {
-        return offset;
-      }
-
-      void set_offset(int offset) {
-        Property::offset = offset;
-      }
-
-      const Type_Info &get_info() const;
-
-      const string &get_other_trellis_name() const {
-        return other_trellis_name;
-      }
   };
 }
